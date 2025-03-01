@@ -15,10 +15,13 @@ type StrategyType =
   | "cautious"
   | "progressive";
 
+// Define game modes
+type GameMode = "manual" | "strategy";
+
 const CoinFlipGame: React.FC = () => {
   const [bankroll, setBankroll] = useState<number>(25);
   const [betAmount, setBetAmount] = useState<number>(1);
-  const [flipsRemaining, setFlipsRemaining] = useState<number>(120);
+  const [flipsRemaining, setFlipsRemaining] = useState<number>(20);
   const [gameHistory, setGameHistory] = useState<GameHistoryItem[]>([]);
   const [flipResult, setFlipResult] = useState<string | null>(null);
   const [gameOver, setGameOver] = useState<boolean>(false);
@@ -27,26 +30,47 @@ const CoinFlipGame: React.FC = () => {
   const [activeInfoTab, setActiveInfoTab] = useState<StrategyType | "general">(
     "general"
   );
+  const [gameMode, setGameMode] = useState<GameMode>("manual");
+  const [showResetOptions, setShowResetOptions] = useState<boolean>(false);
+  const [customFlips, setCustomFlips] = useState<number>(20);
 
   // Reset the game
   const resetGame = () => {
     setBankroll(25);
     setBetAmount(1);
-    setFlipsRemaining(120);
+    setFlipsRemaining(customFlips);
     setGameHistory([]);
     setFlipResult(null);
     setGameOver(false);
     setConsecutiveWins(0);
+    setShowResetOptions(false);
+  };
+
+  // Handle custom flips change
+  const handleCustomFlipsChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (isNaN(value) || value <= 0) {
+      setCustomFlips(1);
+    } else {
+      setCustomFlips(value);
+    }
   };
 
   // Set specific strategy
   const setSpecificStrategy = (newStrategy: StrategyType) => {
     setStrategy(newStrategy);
-    resetGame();
   };
 
-  // Auto-suggest bet amount based on selected strategy
-  useEffect(() => {
+  // Change game mode
+  const changeGameMode = (mode: GameMode) => {
+    setGameMode(mode);
+    if (mode === "strategy") {
+      setBetAmount(calculateSuggestedBet());
+    }
+  };
+
+  // Calculate suggested bet based on strategy
+  const calculateSuggestedBet = () => {
     let suggestedBet = 1;
 
     switch (strategy) {
@@ -92,10 +116,17 @@ const CoinFlipGame: React.FC = () => {
     }
 
     // Ensure bet doesn't exceed bankroll
-    setBetAmount(Math.max(1, Math.min(suggestedBet, bankroll)));
-  }, [bankroll, strategy, consecutiveWins]);
+    return Math.max(1, Math.min(suggestedBet, bankroll));
+  };
 
-  // Adjust bet amount input
+  // Auto-suggest bet amount based on selected strategy (only in strategy mode)
+  useEffect(() => {
+    if (gameMode === "strategy") {
+      setBetAmount(calculateSuggestedBet());
+    }
+  }, [bankroll, strategy, consecutiveWins, gameMode]);
+
+  // Adjust bet amount input (only for manual mode)
   const handleBetChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     if (isNaN(value) || value <= 0) {
@@ -107,7 +138,7 @@ const CoinFlipGame: React.FC = () => {
     }
   };
 
-  // Perform coin flip
+  // Perform coin flip (for manual mode)
   const flipCoin = () => {
     if (flipsRemaining <= 0 || bankroll <= 0 || gameOver) {
       setGameOver(true);
@@ -152,7 +183,7 @@ const CoinFlipGame: React.FC = () => {
     }
   };
 
-  // Auto play
+  // Auto play (for strategy mode)
   const autoPlay = () => {
     // Create a copy of the current state
     let currentBankroll = bankroll;
@@ -180,7 +211,7 @@ const CoinFlipGame: React.FC = () => {
       }
 
       // Calculate current bet based on strategy
-      let currentBetAmount = betAmount;
+      let currentBetAmount = 1;
 
       switch (strategy) {
         case "conservative":
@@ -341,133 +372,199 @@ const CoinFlipGame: React.FC = () => {
           </div>
         )}
 
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Bet Amount
-          </label>
-          <div className="flex">
-            <input
-              type="number"
-              min="1"
-              max={bankroll}
-              value={betAmount}
-              onChange={handleBetChange}
-              className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md"
-              disabled={gameOver}
-            />
-          </div>
-        </div>
-
-        <div className="flex space-x-2 mb-3">
+        {/* Game Mode Tabs */}
+        <div className="flex w-full border-b border-gray-200 mb-3">
           <button
-            onClick={flipCoin}
-            disabled={gameOver || bankroll <= 0 || flipsRemaining <= 0}
-            className="flex-1 bg-blue-600 text-white py-1 px-3 text-sm rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            onClick={() => changeGameMode("manual")}
+            className={`flex-1 py-2 px-4 text-center text-sm font-medium ${
+              gameMode === "manual"
+                ? "bg-blue-100 text-blue-700 border-b-2 border-blue-500"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            }`}
+            disabled={gameOver}
           >
-            Flip Coin (60/40)
+            Manual Betting
           </button>
-
           <button
-            onClick={autoPlay}
-            disabled={gameOver || bankroll <= 0 || flipsRemaining <= 0}
-            className="flex-1 bg-purple-600 text-white py-1 px-3 text-sm rounded-md hover:bg-purple-700 disabled:bg-gray-400"
+            onClick={() => changeGameMode("strategy")}
+            className={`flex-1 py-2 px-4 text-center text-sm font-medium ${
+              gameMode === "strategy"
+                ? "bg-purple-100 text-purple-700 border-b-2 border-purple-500"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            }`}
+            disabled={gameOver}
           >
-            Auto Play
+            Strategy Auto-Play
           </button>
         </div>
 
-        <div className="mb-1">
-          <div className="text-xs font-medium text-gray-700 mb-2">
-            Betting Strategy
-          </div>
-        </div>
+        {/* Manual Mode Content */}
+        {gameMode === "manual" && (
+          <div className="mb-4">
+            <div className="mb-3">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Bet Amount
+              </label>
+              <div className="flex">
+                <input
+                  type="number"
+                  min="1"
+                  max={bankroll}
+                  value={betAmount}
+                  onChange={handleBetChange}
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md"
+                  disabled={gameOver}
+                />
+              </div>
+            </div>
 
-        <div className="grid grid-cols-2 gap-1 mb-3">
-          <button
-            onClick={() => setSpecificStrategy("conservative")}
-            className={`py-1 px-2 rounded-md text-xs ${
-              strategy === "conservative"
-                ? "bg-green-100 text-green-800 border-2 border-green-500 font-bold"
-                : "bg-green-50 text-green-600 border border-green-200"
-            }`}
-          >
-            Kelly (20%)
-          </button>
-
-          <button
-            onClick={() => setSpecificStrategy("cautious")}
-            className={`py-1 px-2 rounded-md text-xs ${
-              strategy === "cautious"
-                ? "bg-yellow-100 text-yellow-800 border-2 border-yellow-500 font-bold"
-                : "bg-yellow-50 text-yellow-600 border border-yellow-200"
-            }`}
-          >
-            Cautious (10%)
-          </button>
-
-          <button
-            onClick={() => setSpecificStrategy("adaptive")}
-            className={`py-1 px-2 rounded-md text-xs ${
-              strategy === "adaptive"
-                ? "bg-blue-100 text-blue-800 border-2 border-blue-500 font-bold"
-                : "bg-blue-50 text-blue-600 border border-blue-200"
-            }`}
-          >
-            Adaptive (20%-50%)
-          </button>
-
-          <button
-            onClick={() => setSpecificStrategy("progressive")}
-            className={`py-1 px-2 rounded-md text-xs ${
-              strategy === "progressive"
-                ? "bg-purple-100 text-purple-800 border-2 border-purple-500 font-bold"
-                : "bg-purple-50 text-purple-600 border border-purple-200"
-            }`}
-          >
-            Progressive
-          </button>
-
-          <button
-            onClick={() => setSpecificStrategy("aggressive")}
-            className={`py-1 px-2 rounded-md col-span-2 text-xs ${
-              strategy === "aggressive"
-                ? "bg-red-100 text-red-800 border-2 border-red-500 font-bold"
-                : "bg-red-50 text-red-600 border border-red-200"
-            }`}
-          >
-            Aggressive (50%)
-          </button>
-        </div>
-
-        <div className="bg-gray-50 p-2 rounded-md mb-3">
-          <div className="text-xs text-gray-500">
-            <span className="font-bold">Current Strategy:</span>
-            <span
-              className={`${getStrategyColorClasses()} px-1 py-0.5 rounded ml-1 text-xs`}
+            <button
+              onClick={flipCoin}
+              disabled={gameOver || bankroll <= 0 || flipsRemaining <= 0}
+              className="w-full bg-blue-600 text-white py-1 px-3 text-sm rounded-md hover:bg-blue-700 disabled:bg-gray-400"
             >
-              {getStrategyDescription()}
-            </span>
+              Flip Coin (60/40)
+            </button>
           </div>
-          {strategy === "adaptive" && (
-            <div className="text-xs text-gray-600 mt-1">
-              Adapts betting percentage based on bankroll size
-            </div>
-          )}
-          {strategy === "progressive" && (
-            <div className="text-xs text-gray-600 mt-1">
-              Increases bet size with each consecutive win, resets after loss
-            </div>
-          )}
-        </div>
+        )}
 
-        <div className="flex justify-center mb-3">
-          <button
-            onClick={resetGame}
-            className="flex-1 max-w-xs bg-gray-200 text-gray-800 py-1 px-3 text-sm rounded-md hover:bg-gray-300"
-          >
-            Reset Game
-          </button>
-        </div>
+        {/* Strategy Mode Content */}
+        {gameMode === "strategy" && (
+          <div className="mb-4">
+            <div className="mb-3">
+              <div className="text-xs font-medium text-gray-700 mb-2">
+                Betting Strategy
+              </div>
+              <div className="grid grid-cols-2 gap-1 mb-3">
+                <button
+                  onClick={() => setSpecificStrategy("conservative")}
+                  className={`py-1 px-2 rounded-md text-xs ${
+                    strategy === "conservative"
+                      ? "bg-green-100 text-green-800 border-2 border-green-500 font-bold"
+                      : "bg-green-50 text-green-600 border border-green-200"
+                  }`}
+                >
+                  Kelly (20%)
+                </button>
+
+                <button
+                  onClick={() => setSpecificStrategy("cautious")}
+                  className={`py-1 px-2 rounded-md text-xs ${
+                    strategy === "cautious"
+                      ? "bg-yellow-100 text-yellow-800 border-2 border-yellow-500 font-bold"
+                      : "bg-yellow-50 text-yellow-600 border border-yellow-200"
+                  }`}
+                >
+                  Cautious (10%)
+                </button>
+
+                <button
+                  onClick={() => setSpecificStrategy("adaptive")}
+                  className={`py-1 px-2 rounded-md text-xs ${
+                    strategy === "adaptive"
+                      ? "bg-blue-100 text-blue-800 border-2 border-blue-500 font-bold"
+                      : "bg-blue-50 text-blue-600 border border-blue-200"
+                  }`}
+                >
+                  Adaptive (20%-50%)
+                </button>
+
+                <button
+                  onClick={() => setSpecificStrategy("progressive")}
+                  className={`py-1 px-2 rounded-md text-xs ${
+                    strategy === "progressive"
+                      ? "bg-purple-100 text-purple-800 border-2 border-purple-500 font-bold"
+                      : "bg-purple-50 text-purple-600 border border-purple-200"
+                  }`}
+                >
+                  Progressive
+                </button>
+
+                <button
+                  onClick={() => setSpecificStrategy("aggressive")}
+                  className={`py-1 px-2 rounded-md col-span-2 text-xs ${
+                    strategy === "aggressive"
+                      ? "bg-red-100 text-red-800 border-2 border-red-500 font-bold"
+                      : "bg-red-50 text-red-600 border border-red-200"
+                  }`}
+                >
+                  Aggressive (50%)
+                </button>
+              </div>
+
+              <div className="bg-gray-50 p-2 rounded-md mb-3">
+                <div className="text-xs text-gray-500">
+                  <span className="font-bold">Selected Strategy:</span>
+                  <span
+                    className={`${getStrategyColorClasses()} px-1 py-0.5 rounded ml-1 text-xs`}
+                  >
+                    {getStrategyDescription()}
+                  </span>
+                </div>
+                {strategy === "adaptive" && (
+                  <div className="text-xs text-gray-600 mt-1">
+                    Adapts betting percentage based on bankroll size
+                  </div>
+                )}
+                {strategy === "progressive" && (
+                  <div className="text-xs text-gray-600 mt-1">
+                    Increases bet size with each consecutive win, resets after
+                    loss
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <button
+              onClick={autoPlay}
+              disabled={gameOver || bankroll <= 0 || flipsRemaining <= 0}
+              className="w-full bg-purple-600 text-white py-1 px-3 text-sm rounded-md hover:bg-purple-700 disabled:bg-gray-400"
+            >
+              Auto Play with {getStrategyDescription()}
+            </button>
+          </div>
+        )}
+
+        {showResetOptions ? (
+          <div className="mb-3 p-2 bg-gray-50 rounded-md">
+            <div className="mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Number of Flips
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="1000"
+                value={customFlips}
+                onChange={handleCustomFlipsChange}
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="flex space-x-2">
+              <button
+                onClick={resetGame}
+                className="flex-1 bg-blue-600 text-white py-1 px-3 text-xs rounded-md hover:bg-blue-700"
+              >
+                Reset with {customFlips} Flips
+              </button>
+              <button
+                onClick={() => setShowResetOptions(false)}
+                className="flex-1 bg-gray-300 text-gray-700 py-1 px-3 text-xs rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex justify-center mb-3">
+            <button
+              onClick={() => setShowResetOptions(true)}
+              className="flex-1 max-w-xs bg-gray-200 text-gray-800 py-1 px-3 text-sm rounded-md hover:bg-gray-300"
+            >
+              Reset Game
+            </button>
+          </div>
+        )}
 
         {gameOver && (
           <div className="mb-3 p-2 text-center rounded bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm">
@@ -610,8 +707,21 @@ const CoinFlipGame: React.FC = () => {
               <h3 className="font-bold text-base mb-2">Game Parameters</h3>
               <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>Starting bankroll: $25</li>
-                <li>Maximum flips: 120</li>
+                <li>Default flips: 20 (customizable when resetting)</li>
                 <li>Win probability: 60%</li>
+              </ul>
+
+              <h3 className="font-bold text-base mb-2">Betting Modes</h3>
+              <ul className="list-disc pl-4 mb-2 text-sm">
+                <li>
+                  <span className="font-semibold">Manual Betting:</span> You
+                  decide how much to bet on each flip
+                </li>
+                <li>
+                  <span className="font-semibold">Strategy Betting:</span> Bet
+                  amount is automatically calculated based on the selected
+                  strategy
+                </li>
               </ul>
 
               <h3 className="font-bold text-base mb-2">Strategy Comparison</h3>
@@ -794,7 +904,7 @@ const CoinFlipGame: React.FC = () => {
                 <li>Protects initial capital with conservative bets</li>
                 <li>Accelerates growth once you have a safety cushion</li>
                 <li>Balances risk of ruin with maximizing returns</li>
-                <li>Well-suited for a fixed number of bets (120 flips)</li>
+                <li>Well-suited for a fixed number of bets</li>
               </ul>
             </div>
           )}
