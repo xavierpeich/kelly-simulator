@@ -305,9 +305,9 @@ const CoinFlipGame: React.FC = () => {
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <div className="bg-white rounded-xl shadow-md p-4 mb-4">
-        <h1 className="text-xl font-bold mb-4">60/40 Coin Flip Game</h1>
+    <div className="max-w-[100%] mx-auto">
+      <div className="bg-white rounded-xl shadow-md p-3 mb-3">
+        <h1 className="text-xl font-bold mb-3">60/40 Coin Flip Game</h1>
 
         <div className="flex justify-between mb-4">
           <div className="text-sm">
@@ -341,7 +341,7 @@ const CoinFlipGame: React.FC = () => {
           </div>
         )}
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Bet Amount
           </label>
@@ -352,17 +352,17 @@ const CoinFlipGame: React.FC = () => {
               max={bankroll}
               value={betAmount}
               onChange={handleBetChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md"
               disabled={gameOver}
             />
           </div>
         </div>
 
-        <div className="flex space-x-2 mb-4">
+        <div className="flex space-x-2 mb-3">
           <button
             onClick={flipCoin}
             disabled={gameOver || bankroll <= 0 || flipsRemaining <= 0}
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            className="flex-1 bg-blue-600 text-white py-1 px-3 text-sm rounded-md hover:bg-blue-700 disabled:bg-gray-400"
           >
             Flip Coin (60/40)
           </button>
@@ -370,22 +370,22 @@ const CoinFlipGame: React.FC = () => {
           <button
             onClick={autoPlay}
             disabled={gameOver || bankroll <= 0 || flipsRemaining <= 0}
-            className="flex-1 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 disabled:bg-gray-400"
+            className="flex-1 bg-purple-600 text-white py-1 px-3 text-sm rounded-md hover:bg-purple-700 disabled:bg-gray-400"
           >
             Auto Play
           </button>
         </div>
 
         <div className="mb-1">
-          <div className="text-sm font-medium text-gray-700 mb-2">
+          <div className="text-xs font-medium text-gray-700 mb-2">
             Betting Strategy
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-4">
+        <div className="grid grid-cols-2 gap-1 mb-3">
           <button
             onClick={() => setSpecificStrategy("conservative")}
-            className={`py-2 px-4 rounded-md text-sm ${
+            className={`py-1 px-2 rounded-md text-xs ${
               strategy === "conservative"
                 ? "bg-green-100 text-green-800 border-2 border-green-500 font-bold"
                 : "bg-green-50 text-green-600 border border-green-200"
@@ -396,7 +396,7 @@ const CoinFlipGame: React.FC = () => {
 
           <button
             onClick={() => setSpecificStrategy("cautious")}
-            className={`py-2 px-4 rounded-md text-sm ${
+            className={`py-1 px-2 rounded-md text-xs ${
               strategy === "cautious"
                 ? "bg-yellow-100 text-yellow-800 border-2 border-yellow-500 font-bold"
                 : "bg-yellow-50 text-yellow-600 border border-yellow-200"
@@ -407,7 +407,7 @@ const CoinFlipGame: React.FC = () => {
 
           <button
             onClick={() => setSpecificStrategy("adaptive")}
-            className={`py-2 px-4 rounded-md text-sm ${
+            className={`py-1 px-2 rounded-md text-xs ${
               strategy === "adaptive"
                 ? "bg-blue-100 text-blue-800 border-2 border-blue-500 font-bold"
                 : "bg-blue-50 text-blue-600 border border-blue-200"
@@ -418,7 +418,7 @@ const CoinFlipGame: React.FC = () => {
 
           <button
             onClick={() => setSpecificStrategy("progressive")}
-            className={`py-2 px-4 rounded-md text-sm ${
+            className={`py-1 px-2 rounded-md text-xs ${
               strategy === "progressive"
                 ? "bg-purple-100 text-purple-800 border-2 border-purple-500 font-bold"
                 : "bg-purple-50 text-purple-600 border border-purple-200"
@@ -429,7 +429,7 @@ const CoinFlipGame: React.FC = () => {
 
           <button
             onClick={() => setSpecificStrategy("aggressive")}
-            className={`py-2 px-4 rounded-md col-span-2 text-sm ${
+            className={`py-1 px-2 rounded-md col-span-2 text-xs ${
               strategy === "aggressive"
                 ? "bg-red-100 text-red-800 border-2 border-red-500 font-bold"
                 : "bg-red-50 text-red-600 border border-red-200"
@@ -439,11 +439,11 @@ const CoinFlipGame: React.FC = () => {
           </button>
         </div>
 
-        <div className="bg-gray-50 p-2 rounded-md mb-4">
+        <div className="bg-gray-50 p-2 rounded-md mb-3">
           <div className="text-xs text-gray-500">
             <span className="font-bold">Current Strategy:</span>
             <span
-              className={`${getStrategyColorClasses()} px-1 py-0.5 rounded ml-1`}
+              className={`${getStrategyColorClasses()} px-1 py-0.5 rounded ml-1 text-xs`}
             >
               {getStrategyDescription()}
             </span>
@@ -460,17 +460,17 @@ const CoinFlipGame: React.FC = () => {
           )}
         </div>
 
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-3">
           <button
             onClick={resetGame}
-            className="flex-1 max-w-xs bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300"
+            className="flex-1 max-w-xs bg-gray-200 text-gray-800 py-1 px-3 text-sm rounded-md hover:bg-gray-300"
           >
             Reset Game
           </button>
         </div>
 
         {gameOver && (
-          <div className="mb-4 p-3 text-center rounded bg-yellow-100 text-yellow-800 border border-yellow-300">
+          <div className="mb-3 p-2 text-center rounded bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm">
             Game Over! Final bankroll: ${bankroll.toFixed(2)}
             {bankroll <= 0 && " - You ran out of money!"}
             {flipsRemaining <= 0 && bankroll > 0 && " - You ran out of flips."}
@@ -478,22 +478,22 @@ const CoinFlipGame: React.FC = () => {
         )}
 
         {gameHistory.length > 0 && (
-          <div className="mt-4">
-            <h2 className="font-bold mb-2">Last 5 Flips</h2>
+          <div className="mt-3">
+            <h2 className="font-bold text-sm mb-1">Last 5 Flips</h2>
             <div className="overflow-hidden rounded-md border border-gray-200">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-2 py-1 text-left text-xs font-medium text-gray-500">
+                    <th className="px-1 py-1 text-left text-xs font-medium text-gray-500">
                       Flip
                     </th>
-                    <th className="px-2 py-1 text-left text-xs font-medium text-gray-500">
+                    <th className="px-1 py-1 text-left text-xs font-medium text-gray-500">
                       Result
                     </th>
-                    <th className="px-2 py-1 text-left text-xs font-medium text-gray-500">
+                    <th className="px-1 py-1 text-left text-xs font-medium text-gray-500">
                       Bet
                     </th>
-                    <th className="px-2 py-1 text-left text-xs font-medium text-gray-500">
+                    <th className="px-1 py-1 text-left text-xs font-medium text-gray-500">
                       Bankroll
                     </th>
                   </tr>
@@ -501,9 +501,9 @@ const CoinFlipGame: React.FC = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {gameHistory.slice(-5).map((item) => (
                     <tr key={item.flip}>
-                      <td className="px-2 py-1 text-xs">{item.flip}</td>
+                      <td className="px-1 py-1 text-xs">{item.flip}</td>
                       <td
-                        className={`px-2 py-1 text-xs ${
+                        className={`px-1 py-1 text-xs ${
                           item.result === "Win"
                             ? "text-green-600"
                             : "text-red-600"
@@ -511,10 +511,10 @@ const CoinFlipGame: React.FC = () => {
                       >
                         {item.result}
                       </td>
-                      <td className="px-2 py-1 text-xs">
+                      <td className="px-1 py-1 text-xs">
                         ${item.betAmount.toFixed(2)}
                       </td>
-                      <td className="px-2 py-1 text-xs">
+                      <td className="px-1 py-1 text-xs">
                         ${item.bankrollAfter.toFixed(2)}
                       </td>
                     </tr>
@@ -528,15 +528,15 @@ const CoinFlipGame: React.FC = () => {
 
       {/* Strategy Information Section - Below Main Card */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="p-4 border-b">
-          <h2 className="text-xl font-bold">Betting Strategies Guide</h2>
+        <div className="p-3 border-b">
+          <h2 className="text-lg font-bold">Betting Strategies Guide</h2>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b overflow-x-auto">
+        <div className="flex flex-wrap border-b">
           <button
             onClick={() => setActiveInfoTab("general")}
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-2 py-2 text-xs font-medium ${
               activeInfoTab === "general"
                 ? "text-blue-600 border-b-2 border-blue-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -546,7 +546,7 @@ const CoinFlipGame: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveInfoTab("progressive")}
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-2 py-2 text-xs font-medium ${
               activeInfoTab === "progressive"
                 ? "text-purple-600 border-b-2 border-purple-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -556,7 +556,7 @@ const CoinFlipGame: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveInfoTab("conservative")}
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-2 py-2 text-xs font-medium ${
               activeInfoTab === "conservative"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -566,7 +566,7 @@ const CoinFlipGame: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveInfoTab("adaptive")}
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-2 py-2 text-xs font-medium ${
               activeInfoTab === "adaptive"
                 ? "text-blue-600 border-b-2 border-blue-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -576,7 +576,7 @@ const CoinFlipGame: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveInfoTab("cautious")}
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-2 py-2 text-xs font-medium ${
               activeInfoTab === "cautious"
                 ? "text-yellow-600 border-b-2 border-yellow-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -586,7 +586,7 @@ const CoinFlipGame: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveInfoTab("aggressive")}
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-2 py-2 text-xs font-medium ${
               activeInfoTab === "aggressive"
                 ? "text-red-600 border-b-2 border-red-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -597,25 +597,25 @@ const CoinFlipGame: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="p-4">
+        <div className="p-3">
           {activeInfoTab === "general" && (
             <div>
-              <h3 className="font-bold text-lg mb-2">About This Game</h3>
-              <p className="mb-3">
+              <h3 className="font-bold text-base mb-2">About This Game</h3>
+              <p className="mb-2 text-sm">
                 This is a 60/40 coin flip game, meaning you have a 60% chance to
                 win each flip. The game demonstrates how different betting
                 strategies perform with a positive expected value.
               </p>
 
-              <h3 className="font-bold text-lg mb-2">Game Parameters</h3>
-              <ul className="list-disc pl-5 mb-3">
+              <h3 className="font-bold text-base mb-2">Game Parameters</h3>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>Starting bankroll: $25</li>
                 <li>Maximum flips: 120</li>
                 <li>Win probability: 60%</li>
               </ul>
 
-              <h3 className="font-bold text-lg mb-2">Strategy Comparison</h3>
-              <p className="mb-2">
+              <h3 className="font-bold text-base mb-2">Strategy Comparison</h3>
+              <p className="mb-2 text-sm">
                 Different strategies balance risk vs. reward:
               </p>
               <ul className="list-disc pl-5">
@@ -651,16 +651,16 @@ const CoinFlipGame: React.FC = () => {
 
           {activeInfoTab === "progressive" && (
             <div>
-              <h3 className="font-bold text-lg mb-2 text-purple-700">
+              <h3 className="font-bold text-base mb-2 text-purple-700">
                 Progressive Strategy
               </h3>
-              <p className="mb-3">
+              <p className="mb-2 text-sm">
                 The progressive strategy is designed to capitalize on winning
                 streaks while protecting your bankroll during losses.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">How It Works</h4>
-              <ol className="list-decimal pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">How It Works</h4>
+              <ol className="list-decimal pl-4 mb-2 text-sm">
                 <li>
                   <strong>Base Betting Rate:</strong> You start conservatively
                   by betting just 10% of your bankroll
@@ -668,7 +668,7 @@ const CoinFlipGame: React.FC = () => {
                 <li>
                   <strong>Win Streak Bonus:</strong> For each consecutive win,
                   your bet increases by 5%
-                  <ul className="list-disc pl-5 mt-1">
+                  <ul className="list-disc pl-4 mt-1">
                     <li>0 wins: 10% of bankroll</li>
                     <li>1 win: 15% of bankroll</li>
                     <li>2 wins: 20% of bankroll</li>
@@ -685,8 +685,8 @@ const CoinFlipGame: React.FC = () => {
                 </li>
               </ol>
 
-              <h4 className="font-semibold text-md mb-1">Why It's Effective</h4>
-              <ul className="list-disc pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">Why It's Effective</h4>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>
                   <strong>Capitalizes on winning streaks:</strong> Since you
                   have a 60% chance to win, winning streaks are more common than
@@ -708,10 +708,10 @@ const CoinFlipGame: React.FC = () => {
                 </li>
               </ul>
 
-              <h4 className="font-semibold text-md mb-1">
+              <h4 className="font-semibold text-sm mb-1">
                 Mathematical Advantage
               </h4>
-              <p>
+              <p className="text-sm">
                 In a 60/40 game, you have a positive expected value (+20% per
                 bet). The progressive strategy magnifies this advantage by
                 betting more when you're on a winning streak and less after
@@ -722,37 +722,37 @@ const CoinFlipGame: React.FC = () => {
 
           {activeInfoTab === "conservative" && (
             <div>
-              <h3 className="font-bold text-lg mb-2 text-green-700">
+              <h3 className="font-bold text-base mb-2 text-green-700">
                 Kelly Criterion (20%)
               </h3>
-              <p className="mb-3">
+              <p className="mb-2 text-sm">
                 The Kelly criterion is a mathematical formula that determines
                 the optimal bet size to maximize the logarithm of wealth over
                 time.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">How It Works</h4>
-              <p className="mb-3">
+              <h4 className="font-semibold text-sm mb-1">How It Works</h4>
+              <p className="mb-2 text-sm">
                 For a 60/40 game with even payoffs, the Kelly formula calculates
                 that the optimal bet is 20% of your bankroll:
               </p>
-              <div className="bg-gray-100 p-2 rounded mb-3">
-                <p className="font-mono">
+              <div className="bg-gray-100 p-2 rounded mb-2">
+                <p className="font-mono text-xs">
                   Kelly percentage = (edge / odds) = (0.6 * 2 - 1) / 1 = 0.2 =
                   20%
                 </p>
               </div>
 
-              <h4 className="font-semibold text-md mb-1">Advantages</h4>
-              <ul className="list-disc pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">Advantages</h4>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>Mathematically optimal for long-term growth</li>
                 <li>Balances growth with protection against ruin</li>
                 <li>Steady, consistent approach</li>
                 <li>Proven theoretical foundation</li>
               </ul>
 
-              <h4 className="font-semibold text-md mb-1">Limitations</h4>
-              <ul className="list-disc pl-5">
+              <h4 className="font-semibold text-sm mb-1">Limitations</h4>
+              <ul className="list-disc pl-4 text-sm">
                 <li>Assumes an infinite time horizon</li>
                 <li>
                   May be suboptimal for limited number of bets (like our 120
@@ -765,32 +765,32 @@ const CoinFlipGame: React.FC = () => {
 
           {activeInfoTab === "adaptive" && (
             <div>
-              <h3 className="font-bold text-lg mb-2 text-blue-700">
+              <h3 className="font-bold text-base mb-2 text-blue-700">
                 Adaptive Strategy
               </h3>
-              <p className="mb-3">
+              <p className="mb-2 text-sm">
                 The adaptive strategy adjusts betting percentage based on your
                 current bankroll size, becoming more aggressive as your bankroll
                 grows.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">How It Works</h4>
-              <ul className="list-disc pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">How It Works</h4>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>Bankroll ≤ $50: Bet 20% (Kelly)</li>
                 <li>Bankroll $51-$100: Bet 30%</li>
                 <li>Bankroll $101-$200: Bet 40%</li>
                 <li>Bankroll {">"} $200: Bet 50% (Aggressive)</li>
               </ul>
 
-              <h4 className="font-semibold text-md mb-1">Theory Behind It</h4>
-              <p className="mb-3">
+              <h4 className="font-semibold text-sm mb-1">Theory Behind It</h4>
+              <p className="mb-2 text-sm">
                 This strategy is based on the concept of "risk budget" - as your
                 bankroll grows, you can afford to take more risk without
                 endangering your initial investment.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">Advantages</h4>
-              <ul className="list-disc pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">Advantages</h4>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>Protects initial capital with conservative bets</li>
                 <li>Accelerates growth once you have a safety cushion</li>
                 <li>Balances risk of ruin with maximizing returns</li>
@@ -801,22 +801,22 @@ const CoinFlipGame: React.FC = () => {
 
           {activeInfoTab === "cautious" && (
             <div>
-              <h3 className="font-bold text-lg mb-2 text-yellow-700">
+              <h3 className="font-bold text-base mb-2 text-yellow-700">
                 Cautious Strategy (10%)
               </h3>
-              <p className="mb-3">
+              <p className="mb-2 text-sm">
                 The cautious strategy uses a fixed 10% of your bankroll for each
                 bet, prioritizing safety above all else.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">How It Works</h4>
-              <p className="mb-3">
+              <h4 className="font-semibold text-sm mb-1">How It Works</h4>
+              <p className="mb-2 text-sm">
                 You consistently bet 10% of your current bankroll on each flip,
                 regardless of previous outcomes or bankroll size.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">Advantages</h4>
-              <ul className="list-disc pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">Advantages</h4>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>Minimizes risk of bankruptcy</li>
                 <li>Very low volatility</li>
                 <li>Psychologically easy to follow</li>
@@ -825,8 +825,8 @@ const CoinFlipGame: React.FC = () => {
                 </li>
               </ul>
 
-              <h4 className="font-semibold text-md mb-1">Limitations</h4>
-              <ul className="list-disc pl-5">
+              <h4 className="font-semibold text-sm mb-1">Limitations</h4>
+              <ul className="list-disc pl-4 text-sm">
                 <li>Suboptimal growth rate compared to Kelly</li>
                 <li>Likely to underperform in limited betting scenarios</li>
                 <li>"Leaving money on the table" in a positive EV game</li>
@@ -836,26 +836,28 @@ const CoinFlipGame: React.FC = () => {
 
           {activeInfoTab === "aggressive" && (
             <div>
-              <h3 className="font-bold text-lg mb-2 text-red-700">
+              <h3 className="font-bold text-base mb-2 text-red-700">
                 Aggressive Strategy (50%)
               </h3>
-              <p className="mb-3">
+              <p className="mb-2 text-sm">
                 The aggressive strategy bets half your bankroll on each flip,
                 maximizing potential returns but accepting significant risk.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">How It Works</h4>
-              <p className="mb-3">
+              <h4 className="font-semibold text-sm mb-1">How It Works</h4>
+              <p className="mb-2 text-sm">
                 You bet 50% of your current bankroll on every flip, regardless
                 of previous outcomes or bankroll size.
               </p>
 
-              <h4 className="font-semibold text-md mb-1">
+              <h4 className="font-semibold text-sm mb-1">
                 Mathematical Impact
               </h4>
-              <div className="bg-gray-100 p-2 rounded mb-3">
-                <p className="mb-1">Consequences of consecutive results:</p>
-                <ul className="list-disc pl-5">
+              <div className="bg-gray-100 p-2 rounded mb-2">
+                <p className="mb-1 text-xs">
+                  Consequences of consecutive results:
+                </p>
+                <ul className="list-disc pl-4 text-xs">
                   <li>
                     Three consecutive losses would reduce your bankroll by 87.5%
                     (50% to 25% to 12.5% of original)
@@ -867,8 +869,8 @@ const CoinFlipGame: React.FC = () => {
                 </ul>
               </div>
 
-              <h4 className="font-semibold text-md mb-1">When It Works Well</h4>
-              <ul className="list-disc pl-5 mb-3">
+              <h4 className="font-semibold text-sm mb-1">When It Works Well</h4>
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>When you get lucky early with winning streaks</li>
                 <li>
                   When you have a large number of bets remaining to recover
@@ -879,14 +881,14 @@ const CoinFlipGame: React.FC = () => {
                 </li>
               </ul>
 
-              <h4 className="font-semibold text-md mb-1">
+              <h4 className="font-semibold text-sm mb-1">
                 Why It Often Leads to Bankruptcy
               </h4>
-              <p className="mb-2">
+              <p className="mb-2 text-sm">
                 Despite the positive expected value of the game, the aggressive
                 strategy often leads to bankruptcy because:
               </p>
-              <ul className="list-disc pl-5">
+              <ul className="list-disc pl-4 text-sm">
                 <li>
                   Just a few consecutive losses can devastate your bankroll
                 </li>
