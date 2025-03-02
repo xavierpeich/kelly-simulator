@@ -299,6 +299,11 @@ const CoinFlipGame: React.FC = () => {
           currentBetAmount = Math.floor(currentBankroll * 0.1 * 100) / 100;
           break;
 
+        case "sbf":
+          // SBF strategy: bet 99% of the bankroll every time
+          currentBetAmount = Math.floor(currentBankroll * 0.99 * 100) / 100;
+          break;
+
         case "progressive":
           // Progressive: increase with consecutive wins
           const progressiveRate = 0.1 + currentConsecutiveWins * 0.05;
