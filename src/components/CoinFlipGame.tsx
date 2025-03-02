@@ -340,6 +340,15 @@ const CoinFlipGame: React.FC = () => {
       <div className="bg-white rounded-xl shadow-md p-3 mb-3">
         <h1 className="text-xl font-bold mb-3">60/40 Coin Flip Game</h1>
 
+        {/* Information Section - About the game */}
+        <div className="mb-4 text-sm text-gray-700">
+          This is a coin flip game with a 60% chance to win each flip. You start
+          with $25 and 20 flips (customizable when resetting). You can bet
+          manually or use one of the built-in strategies. Each strategy balances
+          risk and reward differently, demonstrating how betting approaches
+          perform with a positive expected value.
+        </div>
+
         <div className="flex justify-between mb-4">
           <div className="text-sm">
             <div className="font-bold text-green-700">
@@ -412,8 +421,10 @@ const CoinFlipGame: React.FC = () => {
                   max={bankroll}
                   value={betAmount}
                   onChange={handleBetChange}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md text-base"
                   disabled={gameOver}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                 />
               </div>
             </div>
@@ -627,6 +638,9 @@ const CoinFlipGame: React.FC = () => {
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <div className="p-3 border-b">
           <h2 className="text-lg font-bold">Betting Strategies Guide</h2>
+          <p className="text-xs text-gray-600">
+            Learn about different betting strategies and how they work
+          </p>
         </div>
 
         {/* Tab Navigation */}
@@ -697,38 +711,11 @@ const CoinFlipGame: React.FC = () => {
         <div className="p-3">
           {activeInfoTab === "general" && (
             <div>
-              <h3 className="font-bold text-base mb-2">About This Game</h3>
-              <p className="mb-2 text-sm">
-                This is a 60/40 coin flip game, meaning you have a 60% chance to
-                win each flip. The game demonstrates how different betting
-                strategies perform with a positive expected value.
-              </p>
-
-              <h3 className="font-bold text-base mb-2">Game Parameters</h3>
-              <ul className="list-disc pl-4 mb-2 text-sm">
-                <li>Starting bankroll: $25</li>
-                <li>Default flips: 20 (customizable when resetting)</li>
-                <li>Win probability: 60%</li>
-              </ul>
-
-              <h3 className="font-bold text-base mb-2">Betting Modes</h3>
-              <ul className="list-disc pl-4 mb-2 text-sm">
-                <li>
-                  <span className="font-semibold">Manual Betting:</span> You
-                  decide how much to bet on each flip
-                </li>
-                <li>
-                  <span className="font-semibold">Strategy Betting:</span> Bet
-                  amount is automatically calculated based on the selected
-                  strategy
-                </li>
-              </ul>
-
               <h3 className="font-bold text-base mb-2">Strategy Comparison</h3>
               <p className="mb-2 text-sm">
                 Different strategies balance risk vs. reward:
               </p>
-              <ul className="list-disc pl-5">
+              <ul className="list-disc pl-4 mb-2 text-sm">
                 <li>
                   <span className="font-semibold text-purple-700">
                     Progressive:
@@ -756,6 +743,11 @@ const CoinFlipGame: React.FC = () => {
                   High-risk, high-reward betting (50%)
                 </li>
               </ul>
+
+              <p className="mt-3 mb-2 text-sm italic">
+                Select a specific strategy tab above to learn more about how
+                each one works.
+              </p>
             </div>
           )}
 
